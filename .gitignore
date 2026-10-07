@@ -1,0 +1,14 @@
+.DS_Store
+.vscode/
+.venv/
+__pycache__/
+*.pyc
+
+# Data and run artefacts (images are not redistributed; split index files are committed)
+data/raw/
+data/resized/
+outputs/
+checkpoints/
+*.pt
+*.pth
+instruction.md
