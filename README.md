@@ -24,7 +24,7 @@ Implementation starts after approval.
 
 ## Members
 
-| Name | Student ID | GitHub |
-| --- | --- | --- |
-| Phan Bá Thanh | 2353084 | [pbt245](https://github.com/pbt245) |
-| Trần Công Hoàng Phước | 2352966 | [BenjaminPhuoc](https://github.com/BenjaminPhuoc) |
+| Name | Student ID | GitHub | Email |
+| --- | --- | --- | --- |
+| Phan Bá Thanh | 2353084 | [pbt245](https://github.com/pbt245) | thanh.phancsbk@hcmut.edu.vn |
+| Trần Công Hoàng Phước | 2352966 | [BenjaminPhuoc](https://github.com/BenjaminPhuoc) | phuoc.tranbenjamin@hcmut.edu.vn
