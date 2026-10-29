@@ -1,0 +1,195 @@
+{
+  "dataset": "food101",
+  "n_classes": 101,
+  "n_images": 101000,
+  "class_counts": {
+    "train": {
+      "total": 68189,
+      "min": 675,
+      "max": 676,
+      "imbalance_ratio": 1.0014814814814814
+    },
+    "val": {
+      "total": 7561,
+      "min": 74,
+      "max": 75,
+      "imbalance_ratio": 1.0135135135135136
+    },
+    "test": {
+      "total": 25250,
+      "min": 250,
+      "max": 250,
+      "imbalance_ratio": 1.0
+    }
+  },
+  "image_size_source": "raw archive",
+  "width": {
+    "mean": 495.79139603960397,
+    "std": 45.674347510248246,
+    "min": 193.0,
+    "max": 512.0,
+    "p1": 306.0,
+    "p5": 384.0,
+    "p25": 512.0,
+    "p50": 512.0,
+    "p75": 512.0,
+    "p95": 512.0,
+    "p99": 512.0
+  },
+  "height": {
+    "mean": 475.3721287128713,
+    "std": 65.30576926175482,
+    "min": 122.0,
+    "max": 512.0,
+    "p1": 288.0,
+    "p5": 341.0,
+    "p25": 452.0,
+    "p50": 512.0,
+    "p75": 512.0,
+    "p95": 512.0,
+    "p99": 512.0
+  },
+  "aspect_ratio": {
+    "mean": 1.071723696603177,
+    "std": 0.22820502255753947,
+    "min": 0.376953125,
+    "max": 4.19672131147541,
+    "p1": 0.59765625,
+    "p5": 0.75,
+    "p25": 1.0,
+    "p50": 1.0,
+    "p75": 1.1327433628318584,
+    "p95": 1.501466275659824,
+    "p99": 1.7777777777777777
+  },
+  "file_kb": {
+    "mean": 49.47228831799195,
+    "std": 14.470558753715292,
+    "min": 8.4892578125,
+    "max": 210.6455078125,
+    "p1": 22.75974609375,
+    "p5": 28.7041015625,
+    "p25": 39.7861328125,
+    "p50": 48.42333984375,
+    "p75": 57.134765625,
+    "p95": 73.57241210937497,
+    "p99": 96.60850585937494
+  },
+  "share_max_side_512": 1.0,
+  "share_min_side_below_224": 0.0001386138613861386,
+  "share_portrait": 0.11714851485148516,
+  "share_square": 0.6285643564356436,
+  "share_landscape": 0.2542871287128713,
+  "raw_modes": {
+    "RGB": 100997,
+    "L": 3
+  },
+  "pixel_stats": {
+    "train": {
+      "mean_r": 0.5401850365308689,
+      "mean_g": 0.44196912784142794,
+      "mean_b": 0.3441056691022035,
+      "std_r": 0.2703595254925228,
+      "std_g": 0.27242279214067866,
+      "std_b": 0.2773337543545793,
+      "brightness_mean": 0.4626716848655942,
+      "contrast_mean": 0.23240153220592766,
+      "saturation_mean": 0.2309239218429072,
+      "share_low_saturation_lt_0.05": 0.005074132191409172,
+      "share_dark_lt_0.2": 0.014782442916012847,
+      "share_bright_gt_0.8": 0.0010558887797152033
+    },
+    "val": {
+      "mean_r": 0.5379773943809023,
+      "mean_g": 0.4402323811613035,
+      "mean_b": 0.3415001443792923,
+      "std_r": 0.2715946927549995,
+      "std_g": 0.27274717482284055,
+      "std_b": 0.2764172278527696,
+      "brightness_mean": 0.46040119310937705,
+      "contrast_mean": 0.2328532597804523,
+      "saturation_mean": 0.23110160227483134,
+      "share_low_saturation_lt_0.05": 0.005422563153022087,
+      "share_dark_lt_0.2": 0.01415156725300886,
+      "share_bright_gt_0.8": 0.0013225763787858748
+    },
+    "test": {
+      "mean_r": 0.543209177029743,
+      "mean_g": 0.44492894695082547,
+      "mean_b": 0.3462697737455825,
+      "std_r": 0.2658436030216274,
+      "std_g": 0.26944186804664905,
+      "std_b": 0.2764685855531176,
+      "brightness_mean": 0.4656059513425742,
+      "contrast_mean": 0.23091581124752475,
+      "saturation_mean": 0.2302974623239604,
+      "share_low_saturation_lt_0.05": 0.0042772277227722776,
+      "share_dark_lt_0.2": 0.011366336633663366,
+      "share_bright_gt_0.8": 0.0009108910891089109
+    }
+  },
+  "normalization_used_by_b0": {
+    "mean": [
+      0.5401850365308689,
+      0.44196912784142794,
+      0.3441056691022035
+    ],
+    "std": [
+      0.2703595254925228,
+      0.27242279214067866,
+      0.2773337543545793
+    ],
+    "computed_on": "train split only, pre-resized images (shorter side 256), pixels in [0,1]"
+  },
+  "darkest_classes": {
+    "bibimbap": 0.387,
+    "miso_soup": 0.399,
+    "mussels": 0.4,
+    "prime_rib": 0.416,
+    "edamame": 0.417
+  },
+  "brightest_classes": {
+    "omelette": 0.5,
+    "eggs_benedict": 0.501,
+    "spaghetti_bolognese": 0.503,
+    "risotto": 0.513,
+    "spaghetti_carbonara": 0.537
+  },
+  "near_duplicates": {
+    "max_hamming": 4,
+    "pairs": {
+      "test-test": 6,
+      "test-train": 39,
+      "test-val": 9,
+      "train-train": 88,
+      "val-val": 1
+    },
+    "pairs_with_different_labels": 4,
+    "exact_hash_pairs": 108,
+    "val_moved_to_train_by_split": 14,
+    "test_flagged": 47,
+    "test_flagged_share": 0.0018613861386138613
+  },
+  "imagenet_counterparts": {
+    "guacamole": "guacamole",
+    "hamburger": "cheeseburger",
+    "hot_dog": "hotdog, hot dog, red hot",
+    "ice_cream": "ice cream, icecream",
+    "pizza": "pizza, pizza pie",
+    "spaghetti_carbonara": "carbonara",
+    "breakfast_burrito": "burrito"
+  },
+  "split": {
+    "split_seed": 42,
+    "val_fraction": 0.1,
+    "n_train": 68189,
+    "n_val": 7561,
+    "n_test": 25250,
+    "fingerprints": {
+      "train": "8f130b6f7c76d577",
+      "val": "bdded6761644591e",
+      "test": "101fc179791da757"
+    },
+    "split_unit": "image"
+  }
+}

@@ -1,0 +1,2 @@
+model_a,model_b,seed,acc_a,acc_b,a_right_b_wrong,a_wrong_b_right,statistic,p_value,method
+b0_simple_cnn,p1_resnet50,42,0.7135049504950495,0.8636435643564356,852,4643,2614.0309372156507,0.0,chi2 with continuity correction

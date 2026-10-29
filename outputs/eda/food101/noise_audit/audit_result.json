@@ -1,0 +1,182 @@
+{
+  "n_images": 200,
+  "n_classes": 20,
+  "n_unsure": 7,
+  "n_judged": 193,
+  "n_wrong": 13,
+  "wrong_label_rate": 0.06735751295336788,
+  "wilson_95ci": [
+    0.03978323608587624,
+    0.11181825579230154
+  ],
+  "per_class": {
+    "bibimbap": {
+      "ok": 10,
+      "unsure": 0,
+      "wrong": 0
+    },
+    "bread_pudding": {
+      "ok": 10,
+      "unsure": 0,
+      "wrong": 0
+    },
+    "cannoli": {
+      "ok": 10,
+      "unsure": 0,
+      "wrong": 0
+    },
+    "chicken_curry": {
+      "ok": 7,
+      "unsure": 1,
+      "wrong": 2
+    },
+    "filet_mignon": {
+      "ok": 6,
+      "unsure": 0,
+      "wrong": 4
+    },
+    "frozen_yogurt": {
+      "ok": 8,
+      "unsure": 1,
+      "wrong": 1
+    },
+    "greek_salad": {
+      "ok": 9,
+      "unsure": 1,
+      "wrong": 0
+    },
+    "grilled_salmon": {
+      "ok": 9,
+      "unsure": 1,
+      "wrong": 0
+    },
+    "hot_and_sour_soup": {
+      "ok": 10,
+      "unsure": 0,
+      "wrong": 0
+    },
+    "macaroni_and_cheese": {
+      "ok": 9,
+      "unsure": 0,
+      "wrong": 1
+    },
+    "miso_soup": {
+      "ok": 7,
+      "unsure": 0,
+      "wrong": 3
+    },
+    "onion_rings": {
+      "ok": 10,
+      "unsure": 0,
+      "wrong": 0
+    },
+    "oysters": {
+      "ok": 10,
+      "unsure": 0,
+      "wrong": 0
+    },
+    "pancakes": {
+      "ok": 9,
+      "unsure": 0,
+      "wrong": 1
+    },
+    "peking_duck": {
+      "ok": 9,
+      "unsure": 1,
+      "wrong": 0
+    },
+    "pizza": {
+      "ok": 9,
+      "unsure": 1,
+      "wrong": 0
+    },
+    "red_velvet_cake": {
+      "ok": 8,
+      "unsure": 1,
+      "wrong": 1
+    },
+    "samosa": {
+      "ok": 10,
+      "unsure": 0,
+      "wrong": 0
+    },
+    "scallops": {
+      "ok": 10,
+      "unsure": 0,
+      "wrong": 0
+    },
+    "spaghetti_bolognese": {
+      "ok": 10,
+      "unsure": 0,
+      "wrong": 0
+    }
+  },
+  "wrong_examples": [
+    {
+      "class": "chicken_curry",
+      "entry": "chicken_curry/412840",
+      "note": ""
+    },
+    {
+      "class": "chicken_curry",
+      "entry": "chicken_curry/1539495",
+      "note": ""
+    },
+    {
+      "class": "filet_mignon",
+      "entry": "filet_mignon/1119843",
+      "note": ""
+    },
+    {
+      "class": "filet_mignon",
+      "entry": "filet_mignon/1451810",
+      "note": ""
+    },
+    {
+      "class": "filet_mignon",
+      "entry": "filet_mignon/1835154",
+      "note": ""
+    },
+    {
+      "class": "filet_mignon",
+      "entry": "filet_mignon/1335929",
+      "note": ""
+    },
+    {
+      "class": "frozen_yogurt",
+      "entry": "frozen_yogurt/2324520",
+      "note": ""
+    },
+    {
+      "class": "macaroni_and_cheese",
+      "entry": "macaroni_and_cheese/1264786",
+      "note": ""
+    },
+    {
+      "class": "miso_soup",
+      "entry": "miso_soup/2037505",
+      "note": ""
+    },
+    {
+      "class": "miso_soup",
+      "entry": "miso_soup/1575732",
+      "note": ""
+    },
+    {
+      "class": "miso_soup",
+      "entry": "miso_soup/3568054",
+      "note": ""
+    },
+    {
+      "class": "pancakes",
+      "entry": "pancakes/2842186",
+      "note": ""
+    },
+    {
+      "class": "red_velvet_cake",
+      "entry": "red_velvet_cake/2661519",
+      "note": ""
+    }
+  ],
+  "protocol": "20 random classes x 10 random train images (seed 42); 'unsure' excluded from the rate"
+}

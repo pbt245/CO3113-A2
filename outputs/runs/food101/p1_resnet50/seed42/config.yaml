@@ -1,0 +1,78 @@
+seed: 42
+deterministic: false
+experiment:
+  name: p1_resnet50
+  id: P1
+  group: main
+  mandatory: true
+  reference: null
+  changed_factor: null
+  hypothesis: null
+  decision_criterion: null
+data:
+  image_root: data/resized/food-101-256
+  raw_root: data/raw/food-101
+  split_dir: data/splits
+  index_file: data/meta/image_index.csv.gz
+  split_seed: 42
+  val_fraction: 0.1
+  max_hamming: 4
+  image_size: 224
+  resize: 256
+  normalization: imagenet
+  train_fraction: 1.0
+  subset_seed: 42
+  num_workers: 10
+  augment:
+    crop_scale:
+    - 0.35
+    - 1.0
+    hflip: true
+    color_jitter: 0.1
+  name: food101
+train:
+  epochs: 10
+  batch_size: 64
+  eval_batch_size: 128
+  label_smoothing: 0.0
+  grad_clip: 1.0
+  amp: true
+  early_stopping_patience: 4
+  checkpoint_metric: val_macro_f1
+  max_hours: 0
+  max_steps_per_epoch: 0
+  show_progress: false
+optim:
+  name: adamw
+  lr: 0.001
+  backbone_lr: 0.0001
+  weight_decay: 0.05
+  momentum: 0.9
+scheduler:
+  name: cosine
+  warmup_epochs: 1
+  min_lr_ratio: 0.01
+eval:
+  amp: true
+  bootstrap_samples: 1000
+  ece_bins: 15
+  n_examples: 25
+  inference:
+    batch_size: 128
+    warmup_iters: 10
+    timed_iters: 30
+    latency_samples: 200
+    amp: true
+output:
+  root: outputs/runs
+model:
+  name: resnet50
+  pretrained: true
+  freeze_backbone: false
+run:
+  run_id: food101-p1_resnet50-s42-20261029-195643
+  config_file: /home/benjamin/Documents/26/DL/CO3113-A2/configs/food101/p1_resnet50.yaml
+  overrides:
+  - data.num_workers=10
+  - train.show_progress=false
+  started_at: 2026-10-29T19:56:43+0700

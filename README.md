@@ -162,7 +162,7 @@ results vary slightly between runs.
 | --- | --- | --- |
 | MacBook Air M2, 24 GB | data preparation, EDA, smoke test | macOS, CPU only for the reported numbers |
 | Kaggle notebook | training (planned) | NVIDIA Tesla T4 16 GB, 4 vCPU, CUDA - exact versions in each `env.json` |
-| Desktop | training (alternative) | NVIDIA GeForce RTX 3060 12 GB, 12-core CPU, Arch Linux, CUDA 12.6 |
+| Desktop | M2 runs (B0, P1, seed 42) | NVIDIA GeForce RTX 3060 12 GB, 12-core CPU, Arch Linux, Python 3.12.11, torch 2.14.1+cu126, torchvision 0.29.1, CUDA 12.6, cuDNN 9.10 |
 
 The GPU of every reported run is listed in `runs.csv` (`gpu` column).
 

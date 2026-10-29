@@ -14,3 +14,4 @@ checkpoints/
 outputs/runs/**/checkpoints/
 outputs/results_bundle_*.zip
 instruction.md
+outputs/runs/food101/timing_*/
