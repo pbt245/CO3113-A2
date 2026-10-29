@@ -1,0 +1,12 @@
+# P3 - ImageNet-pretrained ConvNeXt-Tiny, full fine-tuning [OPTIONAL, 1 seed]
+base: _base.yaml
+
+experiment:
+  name: p3_convnext_tiny
+  id: P3
+  mandatory: false
+
+model:
+  name: convnext_tiny            # torchvision ConvNeXt_Tiny_Weights.IMAGENET1K_V1, new classifier[2]
+  pretrained: true
+  freeze_backbone: false

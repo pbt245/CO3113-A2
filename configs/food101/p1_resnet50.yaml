@@ -1,0 +1,11 @@
+# P1 - ImageNet-pretrained ResNet-50, full fine-tuning [MANDATORY]
+base: _base.yaml
+
+experiment:
+  name: p1_resnet50
+  id: P1
+
+model:
+  name: resnet50                 # torchvision ResNet50_Weights.IMAGENET1K_V2, new 101-way fc
+  pretrained: true
+  freeze_backbone: false

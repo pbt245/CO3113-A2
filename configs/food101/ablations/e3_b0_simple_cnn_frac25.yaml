@@ -1,0 +1,31 @@
+# E3 - data efficiency: b0_simple_cnn trained on 25 % of the train split [OPTIONAL, 1 seed]
+base: ../_base.yaml
+
+experiment:
+  name: e3_b0_simple_cnn_frac25
+  id: E3
+  group: ablation
+  mandatory: false
+  reference: b0_simple_cnn
+  changed_factor: "data.train_fraction 1.0 -> 0.25 (stratified per class, subset_seed 42)"
+  hypothesis: >-
+    Pretrained models are far more data-efficient: with 10 % of the train data P1 keeps >= 85 % of
+    its full-data macro-F1, B0 does not.
+  decision_criterion: "ratio of test macro-F1 to the full-data reference (seed 42)."
+
+model:
+  name: simple_cnn
+  channels: [32, 64, 128, 256]
+  block_dropout: 0.0
+  head_dropout: 0.3
+
+data:
+  normalization: train
+  train_fraction: 0.25
+
+optim:
+  lr: 0.001
+  backbone_lr: null
+
+train:
+  epochs: 30

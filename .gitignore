@@ -3,12 +3,14 @@
 .venv/
 __pycache__/
 *.pyc
+.ipynb_checkpoints/
 
-# Data and run artefacts (images are not redistributed; split index files are committed)
+# Data and run artefacts (images are not redistributed; split lists + image index are committed)
 data/raw/
 data/resized/
-outputs/
 checkpoints/
 *.pt
 *.pth
+outputs/runs/**/checkpoints/
+outputs/results_bundle_*.zip
 instruction.md

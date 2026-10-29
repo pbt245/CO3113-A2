@@ -1,0 +1,7 @@
+# Food-101 (Bossard et al., ECCV 2014): 101 classes, 75,750 official train / 25,250 official test.
+# Our split: official train -> stratified 90 % train / 10 % val (split_seed=42), official test untouched.
+# Exact counts after the near-duplicate move are in data/splits/split.json.
+base: ../common.yaml
+
+data:
+  name: food101

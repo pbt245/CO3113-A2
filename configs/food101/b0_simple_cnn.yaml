@@ -1,0 +1,22 @@
+# B0 - simple baseline trained from scratch [MANDATORY]
+base: _base.yaml
+
+experiment:
+  name: b0_simple_cnn
+  id: B0
+
+model:
+  name: simple_cnn
+  channels: [32, 64, 128, 256]   # 4 blocks: 224 -> 112 -> 56 -> 28 -> 14 -> global avg pool
+  block_dropout: 0.0
+  head_dropout: 0.3
+
+data:
+  normalization: train           # no pretrained weights -> train-split statistics
+
+optim:
+  lr: 0.001
+  backbone_lr: null              # single learning rate for every layer
+
+train:
+  epochs: 30                     # fallback if the T4 is too slow: 20 (proposal section 6)

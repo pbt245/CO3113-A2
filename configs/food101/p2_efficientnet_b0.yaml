@@ -1,0 +1,11 @@
+# P2 - ImageNet-pretrained EfficientNet-B0, full fine-tuning [MANDATORY: we commit to >= 1 pretrained, plan 2]
+base: _base.yaml
+
+experiment:
+  name: p2_efficientnet_b0
+  id: P2
+
+model:
+  name: efficientnet_b0          # torchvision EfficientNet_B0_Weights.IMAGENET1K_V1, new classifier[1]
+  pretrained: true
+  freeze_backbone: false

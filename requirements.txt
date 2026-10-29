@@ -1,0 +1,14 @@
+# Python >= 3.10
+# If you have an NVIDIA GPU, install the CUDA build of torch/torchvision FIRST
+# (https://pytorch.org/get-started/locally/), then `pip install -r requirements.txt`.
+# Kaggle images already ship torch/torchvision with CUDA: only the missing packages get installed.
+torch>=2.4
+torchvision>=0.19
+numpy>=1.24
+scipy>=1.10
+scikit-learn>=1.3
+pandas>=2.0
+matplotlib>=3.7
+Pillow>=10.0
+PyYAML>=6.0
+tqdm>=4.66

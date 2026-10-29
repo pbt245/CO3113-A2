@@ -1,0 +1,21 @@
+# E2 - cross-entropy vs cross-entropy with label smoothing 0.1, ResNet-50 [OPTIONAL]
+base: ../_base.yaml
+
+experiment:
+  name: e2_resnet50_label_smoothing
+  id: E2
+  group: ablation
+  mandatory: false
+  reference: p1_resnet50
+  changed_factor: "train.label_smoothing 0.0 -> 0.1"
+  hypothesis: >-
+    Label smoothing improves test macro-F1 by >= 0.5 pp and lowers ECE, because train labels are
+    noisy while test labels are clean.
+  decision_criterion: "Decision rule of proposal section 4, plus lower mean test ECE over 3 seeds."
+
+model:
+  name: resnet50
+  pretrained: true
+
+train:
+  label_smoothing: 0.1

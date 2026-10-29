@@ -9,12 +9,12 @@
 
 | Field | Value |
 | --- | --- |
-| Status | **Pending review** |
-| Decision (Approved / Approved with conditions / Rejected) | - |
-| Conditions from instructor | - |
-| Decision date | - |
+| Status | **Approved** |
+| Decision (Approved / Approved with conditions / Rejected) | Approved |
+| Conditions from instructor | None |
+| Decision date | `[YYYY-MM-DD]` |
 
-Main implementation work is blocked until this proposal is approved .
+Approved without conditions; implementation (M2) follows this plan. Deviations are listed in docs/REPORT_M2.md.
 
 ---
 

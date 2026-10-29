@@ -1,0 +1,20 @@
+# E1 - frozen backbone (linear probe) vs full fine-tuning, ResNet-50 [MANDATORY]
+base: ../_base.yaml
+
+experiment:
+  name: e1_resnet50_linear_probe
+  id: E1
+  group: ablation
+  reference: p1_resnet50
+  changed_factor: "backbone frozen (BN in eval mode), only the new fc is trained"
+  hypothesis: >-
+    Full fine-tuning beats a frozen ImageNet backbone by >= 5 pp test macro-F1, because ImageNet
+    features under-represent fine food texture.
+  decision_criterion: >-
+    Decision rule of proposal section 4 (mean gap over 3 seeds > max seed std AND McNemar p < 0.05
+    on seed 42); the hypothesis holds only if the gap is also >= 5 pp.
+
+model:
+  name: resnet50
+  pretrained: true
+  freeze_backbone: true          # same augmentation as P1; features are NOT cached

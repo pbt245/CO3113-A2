@@ -1,0 +1,75 @@
+# Shared defaults for every Assignment 2 experiment (Food-101).
+# configs/food101/_base.yaml and the experiment configs override these.
+# NOTE: write floats with a dot (0.001), not 1e-3 - PyYAML reads "1e-3" as a string.
+
+seed: 42                    # TRAINING seed (init, shuffling, augmentation). Override with --seed.
+deterministic: false        # true -> cuDNN deterministic + torch deterministic algorithms (slower)
+
+experiment:
+  name: null                # set by each experiment config; used as run folder name
+  id: null                  # proposal ID: B0, P1, P2, P3, E1, E2, E3
+  group: main               # main | ablation | debug
+  mandatory: true           # false for [OPTIONAL] items of the proposal
+  reference: null           # ablations: experiment they are compared against
+  changed_factor: null
+  hypothesis: null
+  decision_criterion: null
+
+data:
+  image_root: data/resized/food-101-256   # pre-resized copy (scripts/preresize.py); Kaggle: override
+  raw_root: data/raw/food-101             # official archive (only needed by preresize / index / EDA)
+  split_dir: data/splits                  # committed split lists + split.json
+  index_file: data/meta/image_index.csv.gz
+  split_seed: 42            # FIXED for every model -> identical train/val/test lists
+  val_fraction: 0.1         # stratified hold-out carved from the official training list
+  max_hamming: 4            # pHash near-duplicate threshold (bits)
+  image_size: 224
+  resize: 256               # eval: Resize(256) -> CenterCrop(224)
+  normalization: imagenet   # imagenet | train (train-split mean/std, used by the from-scratch B0)
+  train_fraction: 1.0       # E3 data-efficiency sweep: stratified subset of the train split
+  subset_seed: 42
+  num_workers: 4
+  augment:
+    crop_scale: [0.35, 1.0] # RandomResizedCrop(224, scale=...)
+    hflip: true
+    color_jitter: 0.1       # brightness / contrast / saturation
+
+train:
+  epochs: 10
+  batch_size: 64
+  eval_batch_size: 128
+  label_smoothing: 0.0
+  grad_clip: 1.0
+  amp: true                 # fp16 autocast + GradScaler; only active on CUDA (T4 has no bf16)
+  early_stopping_patience: 4
+  checkpoint_metric: val_macro_f1   # val_macro_f1 | val_acc | val_loss
+  max_hours: 0              # > 0: stop after the epoch that crosses this wall-clock budget (resume later)
+  max_steps_per_epoch: 0    # > 0 only for timing runs / smoke tests
+  show_progress: true
+
+optim:
+  name: adamw               # adamw | sgd
+  lr: 0.001                 # new classification head
+  backbone_lr: 0.0001       # pretrained backbone (discriminative LR); null -> same as lr
+  weight_decay: 0.05
+  momentum: 0.9             # sgd only
+
+scheduler:
+  name: cosine              # cosine | constant (both with optional linear warm-up)
+  warmup_epochs: 1
+  min_lr_ratio: 0.01
+
+eval:
+  amp: true                 # fp16 forward pass for the test predictions on CUDA
+  bootstrap_samples: 1000
+  ece_bins: 15
+  n_examples: 25
+  inference:
+    batch_size: 128         # throughput is reported at batch 128, latency at batch 1
+    warmup_iters: 10
+    timed_iters: 30
+    latency_samples: 200
+    amp: true               # timing in fp16 on CUDA (how the models would be deployed on a T4)
+
+output:
+  root: outputs/runs
