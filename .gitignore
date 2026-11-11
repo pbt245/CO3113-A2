@@ -15,3 +15,6 @@ outputs/runs/**/checkpoints/
 outputs/results_bundle_*.zip
 instruction.md
 outputs/runs/food101/timing_*/
+outputs/checkpoints_food101.zip
+outputs/CHECKPOINTS_SHA256.txt
+outputs/logs/

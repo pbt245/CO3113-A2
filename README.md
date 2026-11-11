@@ -4,12 +4,13 @@ Deep Learning on Large-Scale Data and Specialized Tasks - Group G-roundhog, Seme
 Fine-grained 101-way food recognition: a from-scratch CNN baseline against ImageNet-pretrained
 ResNet-50 / EfficientNet-B0 (ConvNeXt-Tiny optional), plus controlled fine-tuning experiments.
 
-**Current milestone: M2 - Draft** (proposal approved; EDA complete; B0 and P1 training; preliminary metrics).
+**Current milestone: M3 - Final** (all main models and controlled experiments over 3 seeds, error taxonomy, compute cost).
 
 - Dataset proposal (M1, approved): [PROPOSAL.md](PROPOSAL.md)
-- M2 draft report: [docs/REPORT_M2.md](docs/REPORT_M2.md)
+- M3 final report: [docs/REPORT_M3.md](docs/REPORT_M3.md) (M2 draft: [docs/REPORT_M2.md](docs/REPORT_M2.md))
 - Assignment page: <https://pbt245.github.io/CO3133-DLIA/assignments/assignment2.html>
-- Checkpoints: `[link to Google Drive / Kaggle dataset - added after the runs]`
+- Report (PDF) / slides / video: `[TODO: links]`
+- Checkpoints: `[TODO: link to checkpoints_food101.zip]` (section 7)
 
 | Item | Choice |
 | --- | --- |
@@ -32,6 +33,7 @@ data/
   splits/                        train/val/test lists, split.json, test near-duplicate list  (committed)
   meta/image_index.csv.gz        per-image sizes, pixel sums, pHash                          (committed)
   noise_audit/label_audit.csv    manual label-noise audit sheet                              (committed)
+  error_review/p1_error_review.csv  manual review of 125 P1 test errors                      (committed)
 notebooks/
   kaggle_prepare.ipynb           CPU notebook: pre-resize (no GPU quota)
   kaggle_train.ipynb             GPU notebook: timing runs, training, comparison, result bundle
@@ -46,15 +48,18 @@ scripts/
   train.py                       train one config + seed (resumable), then evaluate on test
   evaluate.py                    re-evaluate a finished run
   run_experiments.py             run many configs x seeds (skips finished, resumes unfinished)
-  compare.py                     mean ± std tables, decision rule, McNemar, figures
-  pack_results.py                zip results (optionally best checkpoints) to move between machines
+  compare.py                     mean ± std tables, decision rule, McNemar, compute cost, E3, figures
+  error_analysis.py              error taxonomy, model error overlap, calibration, manual error review
+  gradcam.py                     Grad-CAM panels for selected test images [OPTIONAL]
+  pack_results.py                zip results / the checkpoint release (best.pt of every run)
 src/
   data/food101.py                metadata, index, split, Dataset, transforms, DataLoaders
   data/phash.py                  64-bit pHash + Hamming search
   data/imagenet_overlap.py       Food-101 classes with an ImageNet-1k counterpart
+  data/food_groups.py            13 culinary groups of the 101 classes (error taxonomy)
   models/                        simple_cnn.py (B0), pretrained.py (torchvision backbones + new head)
   engine/                        loops.py trainer.py evaluate.py metrics.py inference.py
-  utils/ viz/
+  utils/ viz/                    viz/gradcam.py: Grad-CAM with hooks
 ```
 
 Self-implemented: B0 architecture, data pipeline (split, near-duplicate handling, Dataset), pHash,
@@ -69,8 +74,7 @@ F1, confusion matrix), SciPy (DCT, McNemar / Wilson statistics).
 python -m venv .venv
 # Linux/macOS: source .venv/bin/activate      Windows: .venv\Scripts\activate
 # GPU: install the CUDA build of torch/torchvision first (https://pytorch.org/get-started/locally/)
-pip install -r requirements.txt
-pip freeze > requirements-lock.txt          # exact versions used for the reported results
+pip install -r requirements.txt             # or: pip install -r requirements-lock.txt (exact versions of the reported runs)
 python scripts/smoke_test.py                # ~2 min on CPU, no download needed
 ```
 
@@ -107,11 +111,13 @@ Same commands on any machine (RTX 3060, Kaggle T4, ...). On Kaggle use
 python scripts/train.py --config configs/food101/p1_resnet50.yaml --no-eval \
     --set train.epochs=1 train.max_steps_per_epoch=300 experiment.name=timing_p1 experiment.group=debug
 
-# M2: baseline + first pretrained model, seed 42
-python scripts/run_experiments.py --models b0_simple_cnn p1_resnet50 --seeds 42
-# all mandatory main models / the mandatory ablation, 3 seeds
-python scripts/run_experiments.py --group main --mandatory-only --seeds 42 123 2026
-python scripts/run_experiments.py --models e1_resnet50_linear_probe --seeds 42 123 2026
+# M3 - every reported run (finished runs are skipped, interrupted ones resumed); ~13 GPU-h on an RTX 3060
+S="--set data.num_workers=10"
+python scripts/run_experiments.py --models p2_efficientnet_b0 e1_resnet50_linear_probe --seeds 42 123 2026 $S
+python scripts/run_experiments.py --models b0_simple_cnn p1_resnet50 --seeds 42 123 2026 $S
+python scripts/run_experiments.py --models e2_resnet50_label_smoothing --seeds 42 123 2026 $S          # optional
+python scripts/run_experiments.py --models e3_b0_simple_cnn_frac10 e3_b0_simple_cnn_frac25 e3_b0_simple_cnn_frac50 \
+    e3_p1_resnet50_frac10 e3_p1_resnet50_frac25 e3_p1_resnet50_frac50 p3_convnext_tiny --seeds 42 $S  # optional
 
 # images somewhere else (e.g. Kaggle input) -> override per run
 python scripts/train.py --config configs/food101/p1_resnet50.yaml --set data.image_root=/kaggle/input/x/food-101-256
@@ -135,9 +141,20 @@ after 4 epochs without improvement. The test set is used once per selected check
 ## 4. Analysis
 
 ```bash
-python scripts/compare.py           # outputs/comparison/food101/{summary,decisions}.md + figures
-python scripts/pack_results.py      # zip of eda/comparison/runs (no checkpoints) for the report
+python scripts/compare.py                        # outputs/comparison/food101/: summary, decisions, compute_cost,
+                                                 #   data_efficiency, mcnemar, curves, per-class F1
+python scripts/error_analysis.py taxonomy        # outputs/error_analysis/food101/: taxonomy.md, calibration.png, ...
+python scripts/error_analysis.py review-make     # sheets + CSV for the manual error review (already filled in)
+python scripts/error_analysis.py review-score    # -> review_result.md
+python scripts/gradcam.py --models b0_simple_cnn p1_resnet50 p2_efficientnet_b0 p3_convnext_tiny   # [OPTIONAL]
+python scripts/pack_results.py                   # zip of eda/comparison/runs (no checkpoints)
+python scripts/pack_results.py --checkpoints-only  # outputs/checkpoints_food101.zip + CHECKPOINTS_SHA256.txt
 ```
+
+Error taxonomy: every test error goes to exactly one bucket - *consensus* (all pretrained models predict the
+same wrong class), *sibling* (true and predicted class in the same culinary group, `src/data/food_groups.py`),
+*near-miss* (true class in the top 5) or *gross*. The manual review classifies 75 random and the 50 most
+confident P1 errors as `label_wrong` / `ambiguous` / `model_error` (Wilson 95 % CI).
 
 Decision rule (proposal section 4): A is better than B only if the gap in mean test macro-F1 over
 3 seeds exceeds the larger seed std **and** McNemar on seed 42 gives p < 0.05. `decisions.md` marks
@@ -147,7 +164,7 @@ comparisons with fewer than 2 seeds per arm as preliminary.
 
 Each run folder `outputs/runs/food101/<experiment>/seed<seed>/` contains the resolved `config.yaml`
 (with `run_id`, CLI overrides and resume times), `env.json` (hardware, CUDA/cuDNN, library versions,
-git commit and dirty flag), `train.log`, `history.csv`, `train_summary.json`, `model_architecture.txt`
+git commit), `train.log`, `history.csv`, `train_summary.json`, `model_architecture.txt`
 (parameter count, GMACs) and `eval/test_metrics.json` (split fingerprints, checkpoint epoch and SHA-256).
 `outputs/comparison/food101/runs.csv` maps every reported number to its run_id, commit, split
 fingerprint and checkpoint hash.
@@ -161,16 +178,24 @@ results vary slightly between runs.
 | Machine | Used for | Details |
 | --- | --- | --- |
 | MacBook Air M2, 24 GB | data preparation, EDA, smoke test | macOS, CPU only for the reported numbers |
-| Kaggle notebook | training (planned) | NVIDIA Tesla T4 16 GB, 4 vCPU, CUDA - exact versions in each `env.json` |
-| Desktop | M2 runs (B0, P1, seed 42) | NVIDIA GeForce RTX 3060 12 GB, 12-core CPU, Arch Linux, Python 3.12.11, torch 2.14.1+cu126, torchvision 0.29.1, CUDA 12.6, cuDNN 9.10 |
+| Desktop | **every reported run** (training, evaluation, timing) | NVIDIA GeForce RTX 3060 12 GB, 12-core CPU, 31 GB RAM, Arch Linux, Python 3.12.11, torch 2.14.1+cu126, torchvision 0.29.1, CUDA 12.6, cuDNN 9.10 |
+| Kaggle notebook | supported, not used for reported numbers | NVIDIA Tesla T4 16 GB, 4 vCPU ([notebooks/kaggle_train.ipynb](notebooks/kaggle_train.ipynb)) |
 
 The GPU of every reported run is listed in `runs.csv` (`gpu` column).
 
 ## 7. Checkpoints
 
-Checkpoints are not stored in git. Download: `[link]`. Place each `best.pt` in
-`outputs/runs/food101/<experiment>/seed<seed>/checkpoints/` next to the committed run files, then
-run `scripts/evaluate.py`. To rebuild instead, rerun the training commands above at the tagged commit.
+Checkpoints are not stored in git. Download `checkpoints_food101.zip`: `[TODO: link]` and unzip it **at the
+repository root**: it holds `outputs/runs/food101/<experiment>/seed<seed>/checkpoints/best.pt` for every reported
+run, next to the committed run files, plus `CHECKPOINTS_SHA256.txt`. Then:
+
+```bash
+sha256sum -c CHECKPOINTS_SHA256.txt                                   # hashes also in each eval/test_metrics.json
+python scripts/evaluate.py --run-dir outputs/runs/food101/p1_resnet50/seed42
+```
+
+`best.pt` = weights of the epoch with the highest validation macro-F1 (no optimizer state). To rebuild instead,
+rerun the training commands above at the commit listed in `outputs/comparison/food101/runs.csv`.
 
 ## Members
 

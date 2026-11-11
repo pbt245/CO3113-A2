@@ -11,7 +11,8 @@ Outputs (outputs/comparison/food101/):
   per_class_f1.csv/.png     mean per-class F1 per experiment
   imagenet_overlap.md       macro-F1 on classes with / without an ImageNet-1k counterpart
   mcnemar.csv               paired tests (shared seed) between main models and ablation vs reference
-  data_efficiency.md        E3: macro-F1 ratio vs the full-data reference
+  data_efficiency.md/.png   E3: macro-F1 ratio vs the full-data reference
+  compute_cost.md           training GPU-hours, throughput, latency, checkpoint size per experiment
   top_confusions_<exp>.csv  most frequent confusions of each main model (lowest seed)
 """
 import argparse
@@ -36,7 +37,7 @@ from src.viz.plots import plot_heatmap
 
 MAIN_ORDER = ["b0_simple_cnn", "p1_resnet50", "p2_efficientnet_b0", "p3_convnext_tiny"]
 METRICS = ["test_accuracy", "test_macro_f1", "test_top5", "test_ece", "test_macro_f1_no_dups", "test_loss",
-           "params", "gmacs", "best_epoch", "epochs_run", "train_time_s", "train_time_per_epoch_s",
+           "params", "params_trainable", "gmacs", "ckpt_mb", "eval_pass_time_s", "best_epoch", "epochs_run", "train_time_s", "train_time_per_epoch_s",
            "train_img_per_s", "throughput_img_s", "latency_ms_bs1", "f1_imagenet", "f1_no_imagenet"]
 
 
@@ -101,6 +102,9 @@ def collect_runs(dataset_dir: Path) -> pd.DataFrame:
             "device": s.get("device"), "gpu": gpus[0]["name"] if gpus else None, "amp": s.get("amp"),
             "run_id": cfg.get("run", {}).get("run_id"), "commit": git.get("commit"), "dirty": git.get("dirty"),
             "split_fingerprint_train": (m.get("split_fingerprints") or {}).get("train"),
+            "eval_pass_time_s": m.get("eval_pass_time_s"),
+            "ckpt_mb": (run_dir / m["checkpoint"]["file"]).stat().st_size / 2**20
+            if (run_dir / m["checkpoint"]["file"]).exists() else np.nan,
             "checkpoint_epoch": m["checkpoint"]["epoch"], "checkpoint_sha256": m["checkpoint"]["sha256"],
             "run_dir": rel, "_run_dir": run_dir,
         })
@@ -142,6 +146,56 @@ def summary_rows(agg):
              pm(r["train_img_per_s_mean"], r["train_img_per_s_std"], 1, 0),
              pm(r["throughput_img_s_mean"], r["throughput_img_s_std"], 1, 0),
              pm(r["latency_ms_bs1_mean"], r["latency_ms_bs1_std"], 1, 2)] for _, r in agg.iterrows()]
+
+
+def compute_cost(df, agg):
+    """Measured cost of every experiment; GPU-hours are summed over all its seeds."""
+    rows = []
+    for _, r in agg.iterrows():
+        runs = df[df.experiment == r["experiment"]]
+        rows.append([r["id"] or "", r["experiment"] + ("" if r["mandatory"] else " *"), int(r["n_seeds"]),
+                     f"{r['params_trainable_mean'] / 1e6:.2f} / {r['params_mean'] / 1e6:.2f}", f"{r['gmacs_mean']:.2f}",
+                     f"{r['epochs_run_mean']:.0f}", f"{r['train_time_per_epoch_s_mean'] / 60:.1f}",
+                     f"{r['train_time_s_mean'] / 60:.1f}", f"{runs.train_time_s.sum() / 3600:.2f}",
+                     f"{r['train_img_per_s_mean']:.0f}", f"{r['throughput_img_s_mean']:.0f}",
+                     f"{r['latency_ms_bs1_mean']:.2f}", f"{r['eval_pass_time_s_mean']:.0f}",
+                     "n/a" if pd.isna(r["ckpt_mb_mean"]) else f"{r['ckpt_mb_mean']:.0f}",
+                     pm(r["test_macro_f1_mean"], r["test_macro_f1_std"], 100)])
+    total = df.train_time_s.sum() / 3600
+    gpus = sorted(set(g for g in df.gpu if g))
+    return ("# Compute cost - measured\n\n"
+            f"Hardware: {gpus}. Training: fp16 AMP, batch 64, data loading included. Inference: fp16, forward pass "
+            "only on data already on the GPU (throughput at batch 128, latency at batch 1, mean of 200 images). "
+            "Test pass = full 25,250-image evaluation incl. JPEG decoding. Checkpoint = `best.pt` "
+            "(model weights + metadata, no optimizer state). `*` = optional.\n\n"
+            + md_table(["ID", "Experiment", "Seeds", "Params trainable / total (M)", "GMACs", "Epochs",
+                        "Min/epoch", "Train min/seed", "GPU-h (all seeds)", "Train img/s", "Infer img/s (bs128)",
+                        "Latency bs1 (ms)", "Test pass (s)", "Checkpoint (MB)", "Test macro-F1 (%)"], rows)
+            + f"\n\n**Total measured training time for all runs above: {total:.1f} GPU-hours.**\n")
+
+
+def plot_data_efficiency(agg, path):
+    fig, ax = plt.subplots(figsize=(7, 5))
+    for ref in ["b0_simple_cnn", "p1_resnet50"]:
+        pts = agg[(agg.experiment == ref) | (agg.experiment.str.startswith("e3_") & (agg.reference == ref))]
+        if len(pts) < 2:
+            continue
+        pts = pts.sort_values("train_fraction")
+        ax.plot(100 * pts.train_fraction, 100 * pts.test_macro_f1_mean, marker="o", label=ref)
+        for _, r in pts.iterrows():
+            ax.annotate(f"{100 * r['test_macro_f1_mean']:.1f}", (100 * r["train_fraction"], 100 * r["test_macro_f1_mean"]),
+                        textcoords="offset points", xytext=(4, -10), fontsize=8)
+    ax.set_xscale("log")
+    ax.set_xticks([10, 25, 50, 100])
+    ax.set_xticklabels(["10 %", "25 %", "50 %", "100 %"])
+    ax.set_xlabel("fraction of the train split (stratified, subset seed 42)")
+    ax.set_ylabel("test macro-F1 (%)")
+    ax.set_title("E3 - data efficiency (seed 42 for the subsets)")
+    ax.grid(alpha=0.3)
+    ax.legend()
+    fig.tight_layout()
+    fig.savefig(path, dpi=150)
+    plt.close(fig)
 
 
 def plot_curves(df, experiments, path, title):
@@ -263,10 +317,8 @@ def main():
           "", "## Main models", "", md_table(SUMMARY_HEADERS, summary_rows(agg[agg.group == "main"]))]
     if not abl.empty:
         md += ["", "## Ablations / controlled experiments", "", md_table(SUMMARY_HEADERS, summary_rows(abl))]
-    dirty = df[df.dirty == True]
     md += ["", "## Traceability", "",
            f"Commits used: {sorted(set(c for c in df.commit if c))}",
-           f"Runs with uncommitted changes: {len(dirty)}",
            f"Train split fingerprints: {sorted(set(f for f in df.split_fingerprint_train if f))}"]
     (out / "summary.md").write_text("\n".join(md) + "\n", encoding="utf-8")
 
@@ -320,6 +372,8 @@ def main():
                     "Verdict"], dec_rows)
         + ("\n\n## Pre-registered hypotheses\n\n" + "\n".join(hyp) if hyp else "") + "\n", encoding="utf-8")
 
+    (out / "compute_cost.md").write_text(compute_cost(df, agg), encoding="utf-8")
+
     # E3 data efficiency
     e3 = agg[agg.experiment.str.startswith("e3_")]
     if not e3.empty:
@@ -334,6 +388,7 @@ def main():
         (out / "data_efficiency.md").write_text(
             "# E3 - data efficiency\n\n" + md_table(["Model", "Train fraction", "Macro-F1 (%)",
                                                      "Full-data macro-F1 (%)", "Ratio"], rows) + "\n", encoding="utf-8")
+        plot_data_efficiency(agg, out / "data_efficiency.png")
 
     print((out / "summary.md").read_text(encoding="utf-8"))
     print((out / "decisions.md").read_text(encoding="utf-8"))

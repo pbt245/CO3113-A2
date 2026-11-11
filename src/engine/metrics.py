@@ -94,6 +94,17 @@ def mcnemar_test(y_true, pred_a, pred_b) -> dict:
             "method": "chi2 with continuity correction"}
 
 
+def wilson_ci(k: int, n: int, conf: float = 0.95):
+    """Wilson score interval for a binomial proportion k / n."""
+    if n == 0:
+        return float("nan"), float("nan")
+    z = stats.norm.ppf(1 - (1 - conf) / 2)
+    p = k / n
+    centre = (p + z * z / (2 * n)) / (1 + z * z / n)
+    half = z * np.sqrt(p * (1 - p) / n + z * z / (4 * n * n)) / (1 + z * z / n)
+    return float(max(0.0, centre - half)), float(min(1.0, centre + half))
+
+
 def top_confusions(cm: np.ndarray, classes, top_k: int = 15) -> pd.DataFrame:
     n_errors = int(cm.sum() - np.trace(cm))
     rows = []

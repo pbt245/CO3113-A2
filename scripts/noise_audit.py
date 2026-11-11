@@ -24,25 +24,15 @@ sys.path.insert(0, str(ROOT))
 import numpy as np
 import pandas as pd
 from PIL import Image
-from scipy import stats
 from torchvision import transforms as T
 
 from src.data.food101 import image_path, load_split
+from src.engine.metrics import wilson_ci as wilson
 from src.utils.config import load_config
 from src.utils.io import resolve_path, save_json
 from src.viz.plots import plot_image_grid
 
 VERDICTS = {"ok", "wrong", "unsure"}
-
-
-def wilson(k: int, n: int, conf: float = 0.95):
-    if n == 0:
-        return float("nan"), float("nan")
-    z = stats.norm.ppf(1 - (1 - conf) / 2)
-    p = k / n
-    centre = (p + z * z / (2 * n)) / (1 + z * z / n)
-    half = z * np.sqrt(p * (1 - p) / n + z * z / (4 * n * n)) / (1 + z * z / n)
-    return float(max(0.0, centre - half)), float(min(1.0, centre + half))
 
 
 def make(args, cfg):
