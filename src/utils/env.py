@@ -42,6 +42,10 @@ def _git(*args):
 
 def git_info() -> dict:
     commit = _git("rev-parse", "HEAD")
+    if commit is None and (ROOT / "GIT_COMMIT").exists():
+        # offline copy without .git (scripts/make_kaggle_bundle.py writes the exported commit)
+        return {"commit": (ROOT / "GIT_COMMIT").read_text().strip(), "dirty": None, "tag": None,
+                "source": "GIT_COMMIT file"}
     status = _git("status", "--porcelain")
     return {
         "commit": commit,

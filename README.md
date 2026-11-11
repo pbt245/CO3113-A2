@@ -104,7 +104,15 @@ Every run records the split fingerprints.
 ## 3. Training and evaluation
 
 Same commands on any machine (RTX 3060, Kaggle T4, ...). On Kaggle use
-[notebooks/kaggle_train.ipynb](notebooks/kaggle_train.ipynb), which wraps them.
+[notebooks/kaggle_train.ipynb](notebooks/kaggle_train.ipynb), which wraps them and runs with **Internet off**:
+its two inputs are built locally and uploaded as private datasets.
+
+```bash
+python scripts/make_kaggle_bundle.py code     # repo at HEAD (+ GIT_COMMIT) + torchvision ImageNet weights
+python scripts/make_kaggle_bundle.py data     # pre-resized images (food-101-256.zip)
+kaggle datasets create -p outputs/kaggle_bundle/code      # later: kaggle datasets version -p ... -m "msg"
+kaggle datasets create -p outputs/kaggle_bundle/data
+```
 
 ```bash
 # 1-epoch timing run (300 steps): measured img/s for the compute estimate

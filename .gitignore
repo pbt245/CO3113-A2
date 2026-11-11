@@ -18,3 +18,4 @@ outputs/runs/food101/timing_*/
 outputs/checkpoints_food101.zip
 outputs/CHECKPOINTS_SHA256.txt
 outputs/logs/
+outputs/kaggle_bundle/
