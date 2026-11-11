@@ -1,0 +1,37 @@
+{
+  "run_id": "food101-e2_resnet50_label_smoothing-s2026-20261111-091106",
+  "dataset": "food101",
+  "experiment": "e2_resnet50_label_smoothing",
+  "model": "resnet50",
+  "seed": 2026,
+  "device": "cuda",
+  "amp": true,
+  "finished": true,
+  "epochs_max": 10,
+  "epochs_run": 10,
+  "early_stopped": false,
+  "max_steps_per_epoch": 0,
+  "checkpoint_metric": "val_macro_f1",
+  "best_epoch": 8,
+  "best_val_loss": 0.7861534717331771,
+  "best_val_acc": 0.8234360534320857,
+  "best_val_macro_f1": 0.8237935338839899,
+  "best_val_top5": 0.9468324295728078,
+  "train_time_s": 353.2961753479997,
+  "train_time_per_epoch_s": 35.329617534799965,
+  "train_img_per_s_mean": 1929.9202692454746,
+  "parameters": {
+    "trainable": 23714981,
+    "total": 23714981
+  },
+  "gmacs_per_image": 4.087343104,
+  "train_size": 68189,
+  "train_fraction": 1.0,
+  "split_file": "/kaggle/working/CO3113-A2/data/splits/split.json",
+  "split_fingerprints": {
+    "train": "8f130b6f7c76d577",
+    "val": "bdded6761644591e",
+    "test": "101fc179791da757",
+    "train_used": "8f130b6f7c76d577"
+  }
+}

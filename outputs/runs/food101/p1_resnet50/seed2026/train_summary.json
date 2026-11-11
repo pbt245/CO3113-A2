@@ -1,0 +1,37 @@
+{
+  "run_id": "food101-p1_resnet50-s2026-20261111-100849",
+  "dataset": "food101",
+  "experiment": "p1_resnet50",
+  "model": "resnet50",
+  "seed": 2026,
+  "device": "cuda",
+  "amp": true,
+  "finished": true,
+  "epochs_max": 10,
+  "epochs_run": 10,
+  "early_stopped": false,
+  "max_steps_per_epoch": 0,
+  "checkpoint_metric": "val_macro_f1",
+  "best_epoch": 10,
+  "best_val_loss": 0.7634497822521383,
+  "best_val_acc": 0.824626372172993,
+  "best_val_macro_f1": 0.8251352958450581,
+  "best_val_top5": 0.9500066128818939,
+  "train_time_s": 351.58481062400006,
+  "train_time_per_epoch_s": 35.15848106240001,
+  "train_img_per_s_mean": 1939.292866691995,
+  "parameters": {
+    "trainable": 23714981,
+    "total": 23714981
+  },
+  "gmacs_per_image": 4.087343104,
+  "train_size": 68189,
+  "train_fraction": 1.0,
+  "split_file": "/kaggle/working/CO3113-A2/data/splits/split.json",
+  "split_fingerprints": {
+    "train": "8f130b6f7c76d577",
+    "val": "bdded6761644591e",
+    "test": "101fc179791da757",
+    "train_used": "8f130b6f7c76d577"
+  }
+}

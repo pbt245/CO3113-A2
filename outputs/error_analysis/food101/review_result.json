@@ -1,0 +1,114 @@
+{
+  "model": "p1_resnet50",
+  "n_raters": 1,
+  "strata": {
+    "random": {
+      "n": 75,
+      "label_wrong": {
+        "k": 2,
+        "rate": 0.02666666666666667,
+        "wilson_95ci": [
+          0.0073436890061313945,
+          0.09211488187759151
+        ]
+      },
+      "ambiguous": {
+        "k": 28,
+        "rate": 0.37333333333333335,
+        "wilson_95ci": [
+          0.2725596912402112,
+          0.48645034885543315
+        ]
+      },
+      "model_error": {
+        "k": 45,
+        "rate": 0.6,
+        "wilson_95ci": [
+          0.48688038796210664,
+          0.7033748435413321
+        ]
+      }
+    },
+    "top_conf": {
+      "n": 50,
+      "label_wrong": {
+        "k": 18,
+        "rate": 0.36,
+        "wilson_95ci": [
+          0.24138749651846741,
+          0.49858983123887307
+        ]
+      },
+      "ambiguous": {
+        "k": 23,
+        "rate": 0.46,
+        "wilson_95ci": [
+          0.3296965219222435,
+          0.5960112860084253
+        ]
+      },
+      "model_error": {
+        "k": 9,
+        "rate": 0.18,
+        "wilson_95ci": [
+          0.09770192670234178,
+          0.30796053674300783
+        ]
+      }
+    }
+  },
+  "bucket_x_verdict": {
+    "consensus": {
+      "label_wrong": 0,
+      "ambiguous": 0,
+      "model_error": 0
+    },
+    "sibling": {
+      "label_wrong": 14,
+      "ambiguous": 29,
+      "model_error": 17
+    },
+    "near_miss": {
+      "label_wrong": 2,
+      "ambiguous": 16,
+      "model_error": 28
+    },
+    "gross": {
+      "label_wrong": 4,
+      "ambiguous": 6,
+      "model_error": 9
+    }
+  },
+  "persistence": {
+    "label_wrong": {
+      "wrong_P1": 20,
+      "same_P1": 20,
+      "wrong_P2": 18,
+      "same_P2": 18,
+      "wrong_P3": 19,
+      "same_P3": 19,
+      "wrong_all": 18,
+      "same_all": 18
+    },
+    "ambiguous": {
+      "wrong_P1": 49,
+      "same_P1": 43,
+      "wrong_P2": 41,
+      "same_P2": 28,
+      "wrong_P3": 36,
+      "same_P3": 31,
+      "wrong_all": 29,
+      "same_all": 21
+    },
+    "model_error": {
+      "wrong_P1": 42,
+      "same_P1": 35,
+      "wrong_P2": 31,
+      "same_P2": 21,
+      "wrong_P3": 30,
+      "same_P3": 16,
+      "wrong_all": 22,
+      "same_all": 13
+    }
+  }
+}

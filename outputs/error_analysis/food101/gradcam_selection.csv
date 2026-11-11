@@ -1,0 +1,17 @@
+index,entry,y_true,y_pred,true_name,pred_name,confidence,prob_true_class,correct,top5,bucket,confident,near_duplicate,true_group,pred_group,reason
+11642,garlic_bread/2957596,46,10,garlic_bread,bruschetta,0.9999995,4.4495216e-09,False,10 9 15 19 67,consensus,True,False,breads_dips,breads_dips,P1 error: consensus
+21967,scallops/643668,87,69,scallops,oysters,0.9999974,2.930357e-07,False,69 52 32 87 95,consensus,True,False,seafood,seafood,P1 error: consensus
+16271,mussels/1407674,65,69,mussels,oysters,0.9999906,9.18751e-06,False,69 65 24 35 41,consensus,True,False,seafood,seafood,P1 error: consensus
+23950,sushi/5437,95,86,sushi,sashimi,0.9997116,0.00028130537,False,86 95 87 50 15,sibling,True,False,raw_fish_meat,raw_fish_meat,P1 error: sibling
+4193,cheesecake/3699772,16,98,cheesecake,tiramisu,0.99950635,0.0004840578,False,98 16 49 14 83,sibling,True,False,cakes_creams,cakes_creams,P1 error: sibling
+12148,greek_salad/341142,48,88,greek_salad,seaweed_salad,0.99927706,0.0004440945,False,88 48 35 7 5,sibling,True,False,salads,salads,P1 error: sibling
+16694,nachos/3665796,66,56,nachos,huevos_rancheros,0.99998164,3.9130628e-06,False,56 44 66 89 9,near_miss,True,False,sandwiches_wraps,eggs,P1 error: near_miss
+5551,chocolate_mousse/1622112,22,99,chocolate_mousse,tuna_tartare,0.99938214,0.00057476136,False,99 22 4 95 14,near_miss,True,False,cakes_creams,raw_fish_meat,P1 error: near_miss
+12968,guacamole/580887,51,15,guacamole,ceviche,0.9988004,0.0011972084,False,15 51 96 56 36,near_miss,True,False,breads_dips,raw_fish_meat,P1 error: near_miss
+24326,takoyaki/2014521,97,30,takoyaki,deviled_eggs,0.99880755,2.5930635e-07,False,30 73 16 39 99,gross,True,False,dumplings_rolls,eggs,P1 error: gross
+13831,hot_dog/1907180,55,10,hot_dog,bruschetta,0.9962685,0.00028586568,False,10 3 99 15 86,gross,True,False,sandwiches_wraps,breads_dips,P1 error: gross
+24653,tiramisu/333067,98,0,tiramisu,apple_pie,0.994603,6.659447e-06,False,0 16 14 29 63,gross,True,False,cakes_creams,pastry_breakfast,P1 error: gross
+11874,gnocchi/3118878,47,47,gnocchi,gnocchi,0.9988366,0.9988366,True,47 84 82 37 62,,True,False,pasta_rice,pasta_rice,P1 correct
+12453,grilled_cheese_sandwich/645786,49,49,grilled_cheese_sandwich,grilled_cheese_sandwich,0.99991167,0.99991167,True,49 28 80 40 25,,True,False,sandwiches_wraps,sandwiches_wraps,P1 correct
+22138,seaweed_salad/2918751,88,88,seaweed_salad,seaweed_salad,1.0,1.0,True,88 7 47 5 26,,True,False,salads,salads,P1 correct
+15970,macarons/532641,63,63,macarons,macarons,0.99992406,0.99992406,True,63 83 14 97 29,,True,False,pastry_breakfast,pastry_breakfast,P1 correct

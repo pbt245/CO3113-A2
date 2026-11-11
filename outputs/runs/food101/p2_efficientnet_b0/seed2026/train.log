@@ -1,0 +1,17 @@
+2026-11-11 10:27:49 | INFO | Run food101-p2_efficientnet_b0-s2026-20261111-102749 | device cuda | torch 2.11.0+cu130 | git {'commit': 'a12ccd6e4bb5a1b0ac38c7171abb946404018199', 'dirty': None, 'tag': None, 'source': 'GIT_COMMIT file'}
+2026-11-11 10:27:49 | INFO | Dataset food101 | split /kaggle/working/CO3113-A2/data/splits/split.json | train/val/test = 68189/7561/25250 | fingerprints {'train': '8f130b6f7c76d577', 'val': 'bdded6761644591e', 'test': '101fc179791da757', 'train_used': '8f130b6f7c76d577'}
+2026-11-11 10:27:50 | INFO | Model efficientnet_b0 | parameters: 4,136,929 total, 4,136,929 trainable | 0.38 GMACs/image
+2026-11-11 10:27:50 | INFO | Optimizer groups: [('head', 9.389671361502348e-07, 0.05, 1), ('head_no_decay', 9.389671361502348e-07, 0.0, 1), ('backbone', 9.389671361502348e-08, 0.05, 81), ('backbone_no_decay', 9.389671361502348e-08, 0.0, 130)]
+2026-11-11 10:28:28 | INFO | epoch   1 | lr 9.39e-07/9.39e-08 | train loss 2.8130 acc 0.3824 | val loss 1.3258 acc 0.6598 macroF1 0.6541 top5 0.8738 | 34.5s (1977 img/s)  *best*
+2026-11-11 10:29:02 | INFO | epoch   2 | lr 1.00e-03/1.00e-04 | train loss 1.2680 acc 0.6697 | val loss 0.9823 acc 0.7371 macroF1 0.7351 top5 0.9191 | 30.8s (2210 img/s)  *best*
+2026-11-11 10:29:35 | INFO | epoch   3 | lr 9.70e-04/9.70e-05 | train loss 0.9831 acc 0.7373 | val loss 0.8866 acc 0.7629 macroF1 0.7628 top5 0.9295 | 30.7s (2218 img/s)  *best*
+2026-11-11 10:30:08 | INFO | epoch   4 | lr 8.84e-04/8.84e-05 | train loss 0.8337 acc 0.7738 | val loss 0.8358 acc 0.7799 macroF1 0.7798 top5 0.9357 | 30.7s (2220 img/s)  *best*
+2026-11-11 10:30:42 | INFO | epoch   5 | lr 7.52e-04/7.52e-05 | train loss 0.7228 acc 0.7993 | val loss 0.8067 acc 0.7890 macroF1 0.7889 top5 0.9357 | 31.0s (2198 img/s)  *best*
+2026-11-11 10:31:15 | INFO | epoch   6 | lr 5.91e-04/5.91e-05 | train loss 0.6319 acc 0.8232 | val loss 0.8011 acc 0.7887 macroF1 0.7883 top5 0.9384 | 30.6s (2225 img/s)
+2026-11-11 10:31:49 | INFO | epoch   7 | lr 4.19e-04/4.19e-05 | train loss 0.5564 acc 0.8426 | val loss 0.7861 acc 0.7943 macroF1 0.7944 top5 0.9410 | 31.0s (2198 img/s)  *best*
+2026-11-11 10:32:22 | INFO | epoch   8 | lr 2.58e-04/2.58e-05 | train loss 0.5105 acc 0.8560 | val loss 0.7758 acc 0.8008 macroF1 0.8006 top5 0.9419 | 30.7s (2219 img/s)  *best*
+2026-11-11 10:32:56 | INFO | epoch   9 | lr 1.26e-04/1.26e-05 | train loss 0.4759 acc 0.8654 | val loss 0.7834 acc 0.7980 macroF1 0.7977 top5 0.9411 | 31.2s (2184 img/s)
+2026-11-11 10:33:30 | INFO | epoch  10 | lr 3.99e-05/3.99e-06 | train loss 0.4672 acc 0.8683 | val loss 0.7754 acc 0.8008 macroF1 0.8005 top5 0.9418 | 30.9s (2204 img/s)
+2026-11-11 10:33:30 | INFO | Best epoch 8 | val macroF1 0.8006 | val acc 0.8008 | train time 5.2 min
+2026-11-11 10:33:46 | INFO | [test] acc 0.8478 (95% CI 0.8434-0.8520) | macroF1 0.8474 (95% CI 0.8429-0.8513) | top5 0.9697 | ECE 0.0180 | throughput 14510 img/s | latency bs1 2.09 ms
+2026-11-11 10:33:46 | INFO | Done: /kaggle/working/CO3113-A2/outputs/runs/food101/p2_efficientnet_b0/seed2026

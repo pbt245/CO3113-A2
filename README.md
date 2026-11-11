@@ -52,6 +52,7 @@ scripts/
   error_analysis.py              error taxonomy, model error overlap, calibration, manual error review
   gradcam.py                     Grad-CAM panels for selected test images [OPTIONAL]
   pack_results.py                zip results / the checkpoint release (best.pt of every run)
+  predict.py                     demo: top-5 prediction for any image file with a run's best.pt
 src/
   data/food101.py                metadata, index, split, Dataset, transforms, DataLoaders
   data/phash.py                  64-bit pHash + Hamming search
@@ -119,7 +120,8 @@ kaggle datasets create -p outputs/kaggle_bundle/data
 python scripts/train.py --config configs/food101/p1_resnet50.yaml --no-eval \
     --set train.epochs=1 train.max_steps_per_epoch=300 experiment.name=timing_p1 experiment.group=debug
 
-# M3 - every reported run (finished runs are skipped, interrupted ones resumed); ~13 GPU-h on an RTX 3060
+# M3 - every reported run (finished runs are skipped, interrupted ones resumed); 2.4 GPU-h on an RTX PRO 6000
+# (the reported runs used notebooks/kaggle_train.ipynb, which issues exactly these calls)
 S="--set data.num_workers=10"
 python scripts/run_experiments.py --models p2_efficientnet_b0 e1_resnet50_linear_probe --seeds 42 123 2026 $S
 python scripts/run_experiments.py --models b0_simple_cnn p1_resnet50 --seeds 42 123 2026 $S
@@ -134,7 +136,7 @@ python scripts/train.py --config configs/food101/p1_resnet50.yaml --set data.ima
 python scripts/train.py --config configs/food101/p1_resnet50.yaml --seed 42 --resume
 
 # re-evaluate a run
-python scripts/evaluate.py --run-dir outputs/runs/food101/p1_resnet50/seed42
+python scripts/evaluate.py --run-dir outputs/runs/food101/p1_resnet50/seed42 --set data.image_root=data/resized/food-101-256
 ```
 
 Fine-tuning protocol (P1-P3): `RandomResizedCrop(224, scale=(0.35, 1))` + horizontal flip + colour
@@ -154,7 +156,9 @@ python scripts/compare.py                        # outputs/comparison/food101/: 
 python scripts/error_analysis.py taxonomy        # outputs/error_analysis/food101/: taxonomy.md, calibration.png, ...
 python scripts/error_analysis.py review-make     # sheets + CSV for the manual error review (already filled in)
 python scripts/error_analysis.py review-score    # -> review_result.md
-python scripts/gradcam.py --models b0_simple_cnn p1_resnet50 p2_efficientnet_b0 p3_convnext_tiny   # [OPTIONAL]
+python scripts/gradcam.py --models b0_simple_cnn p1_resnet50 p2_efficientnet_b0 p3_convnext_tiny \
+    --set data.image_root=data/resized/food-101-256                                  # [OPTIONAL]
+python scripts/predict.py my_photo.jpg --run-dir outputs/runs/food101/p3_convnext_tiny/seed42   # demo
 python scripts/pack_results.py                   # zip of eda/comparison/runs (no checkpoints)
 python scripts/pack_results.py --checkpoints-only  # outputs/checkpoints_food101.zip + CHECKPOINTS_SHA256.txt
 ```
@@ -186,8 +190,8 @@ results vary slightly between runs.
 | Machine | Used for | Details |
 | --- | --- | --- |
 | MacBook Air M2, 24 GB | data preparation, EDA, smoke test | macOS, CPU only for the reported numbers |
-| Desktop | **every reported run** (training, evaluation, timing) | NVIDIA GeForce RTX 3060 12 GB, 12-core CPU, 31 GB RAM, Arch Linux, Python 3.12.11, torch 2.14.1+cu126, torchvision 0.29.1, CUDA 12.6, cuDNN 9.10 |
-| Kaggle notebook | supported, not used for reported numbers | NVIDIA Tesla T4 16 GB, 4 vCPU ([notebooks/kaggle_train.ipynb](notebooks/kaggle_train.ipynb)) |
+| Kaggle notebook, Internet off | **every reported M3 run** (training, test evaluation, timing) - two parallel sessions (A: B0/P1/P2/E1, B: E2/E3/P3) on the same GPU type, code commit `a12ccd6` | NVIDIA RTX PRO 6000 Blackwell Server Edition 95 GB, 48 vCPU, Python 3.13.16, torch 2.11.0+cu130, torchvision 0.26.0+cu130, CUDA 13.0, cuDNN 9.27 |
+| Desktop | data preparation, EDA, error analysis, Grad-CAM, M2 draft runs (superseded) | NVIDIA GeForce RTX 3060 12 GB, 12-core CPU, Arch Linux, Python 3.12.11, torch 2.14.1+cu126 |
 
 The GPU of every reported run is listed in `runs.csv` (`gpu` column).
 
@@ -199,11 +203,13 @@ run, next to the committed run files, plus `CHECKPOINTS_SHA256.txt`. Then:
 
 ```bash
 sha256sum -c CHECKPOINTS_SHA256.txt                                   # hashes also in each eval/test_metrics.json
-python scripts/evaluate.py --run-dir outputs/runs/food101/p1_resnet50/seed42
+python scripts/evaluate.py --run-dir outputs/runs/food101/p1_resnet50/seed42 --set data.image_root=data/resized/food-101-256
 ```
 
 `best.pt` = weights of the epoch with the highest validation macro-F1 (no optimizer state). To rebuild instead,
 rerun the training commands above at the commit listed in `outputs/comparison/food101/runs.csv`.
+The stored run configs point at the Kaggle input folder, hence `--set data.image_root=...` for local
+re-evaluation (the same override works for `scripts/gradcam.py`).
 
 ## Members
 

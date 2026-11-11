@@ -1,0 +1,87 @@
+seed: 42
+deterministic: false
+experiment:
+  name: e3_b0_simple_cnn_frac10
+  id: E3
+  group: ablation
+  mandatory: false
+  reference: b0_simple_cnn
+  changed_factor: data.train_fraction 1.0 -> 0.1 (stratified per class, subset_seed
+    42)
+  hypothesis: 'Pretrained models are far more data-efficient: with 10 % of the train
+    data P1 keeps >= 85 % of its full-data macro-F1, B0 does not.'
+  decision_criterion: ratio of test macro-F1 to the full-data reference (seed 42).
+data:
+  image_root: /kaggle/input/datasets/benjaminphc/food-101-256/food-101-256
+  raw_root: data/raw/food-101
+  split_dir: data/splits
+  index_file: data/meta/image_index.csv.gz
+  split_seed: 42
+  val_fraction: 0.1
+  max_hamming: 4
+  image_size: 224
+  resize: 256
+  normalization: train
+  train_fraction: 0.1
+  subset_seed: 42
+  num_workers: 48
+  augment:
+    crop_scale:
+    - 0.35
+    - 1.0
+    hflip: true
+    color_jitter: 0.1
+  name: food101
+train:
+  epochs: 30
+  batch_size: 64
+  eval_batch_size: 128
+  label_smoothing: 0.0
+  grad_clip: 1.0
+  amp: true
+  early_stopping_patience: 4
+  checkpoint_metric: val_macro_f1
+  max_hours: 10.24
+  max_steps_per_epoch: 0
+  show_progress: false
+optim:
+  name: adamw
+  lr: 0.001
+  backbone_lr: null
+  weight_decay: 0.05
+  momentum: 0.9
+scheduler:
+  name: cosine
+  warmup_epochs: 1
+  min_lr_ratio: 0.01
+eval:
+  amp: true
+  bootstrap_samples: 1000
+  ece_bins: 15
+  n_examples: 25
+  inference:
+    batch_size: 128
+    warmup_iters: 10
+    timed_iters: 30
+    latency_samples: 200
+    amp: true
+output:
+  root: outputs/runs
+model:
+  name: simple_cnn
+  channels:
+  - 32
+  - 64
+  - 128
+  - 256
+  block_dropout: 0.0
+  head_dropout: 0.3
+run:
+  run_id: food101-e3_b0_simple_cnn_frac10-s42-20261111-092634
+  config_file: /kaggle/working/CO3113-A2/configs/food101/ablations/e3_b0_simple_cnn_frac10.yaml
+  overrides:
+  - data.image_root=/kaggle/input/datasets/benjaminphc/food-101-256/food-101-256
+  - data.num_workers=48
+  - train.show_progress=false
+  - train.max_hours=10.24
+  started_at: 2026-11-11T09:26:34+0000

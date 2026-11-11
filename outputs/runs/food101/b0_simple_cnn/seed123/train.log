@@ -1,0 +1,37 @@
+2026-11-11 09:16:13 | INFO | Run food101-b0_simple_cnn-s123-20261111-091613 | device cuda | torch 2.11.0+cu130 | git {'commit': 'a12ccd6e4bb5a1b0ac38c7171abb946404018199', 'dirty': None, 'tag': None, 'source': 'GIT_COMMIT file'}
+2026-11-11 09:16:13 | INFO | Dataset food101 | split /kaggle/working/CO3113-A2/data/splits/split.json | train/val/test = 68189/7561/25250 | fingerprints {'train': '8f130b6f7c76d577', 'val': 'bdded6761644591e', 'test': '101fc179791da757', 'train_used': '8f130b6f7c76d577'}
+2026-11-11 09:16:13 | INFO | Model simple_cnn | parameters: 1,199,173 total, 1,199,173 trainable | 2.59 GMACs/image
+2026-11-11 09:16:13 | INFO | Optimizer groups: [('head', 9.389671361502348e-07, 0.05, 1), ('head_no_decay', 9.389671361502348e-07, 0.0, 1), ('backbone', 9.389671361502348e-07, 0.05, 8), ('backbone_no_decay', 9.389671361502348e-07, 0.0, 16)]
+2026-11-11 09:16:55 | INFO | epoch   1 | lr 9.39e-07/9.39e-07 | train loss 4.1851 acc 0.0741 | val loss 3.8428 acc 0.1176 macroF1 0.0839 top5 0.3169 | 37.2s (1834 img/s)  *best*
+2026-11-11 09:17:33 | INFO | epoch   2 | lr 1.00e-03/1.00e-03 | train loss 3.5779 acc 0.1618 | val loss 3.6226 acc 0.1557 macroF1 0.1238 top5 0.3854 | 35.3s (1929 img/s)  *best*
+2026-11-11 09:18:11 | INFO | epoch   3 | lr 9.97e-04/9.97e-04 | train loss 3.1900 acc 0.2396 | val loss 3.0129 acc 0.2863 macroF1 0.2679 top5 0.5662 | 35.5s (1922 img/s)  *best*
+2026-11-11 09:18:49 | INFO | epoch   4 | lr 9.88e-04/9.88e-04 | train loss 2.9204 acc 0.2929 | val loss 3.5699 acc 0.1912 macroF1 0.1673 top5 0.4322 | 35.4s (1927 img/s)
+2026-11-11 09:19:27 | INFO | epoch   5 | lr 9.74e-04/9.74e-04 | train loss 2.7346 acc 0.3356 | val loss 2.8776 acc 0.3209 macroF1 0.3082 top5 0.6052 | 35.4s (1923 img/s)  *best*
+2026-11-11 09:20:05 | INFO | epoch   6 | lr 9.54e-04/9.54e-04 | train loss 2.5905 acc 0.3656 | val loss 2.6888 acc 0.3439 macroF1 0.3360 top5 0.6392 | 35.6s (1916 img/s)  *best*
+2026-11-11 09:20:43 | INFO | epoch   7 | lr 9.29e-04/9.29e-04 | train loss 2.4732 acc 0.3927 | val loss 2.5358 acc 0.3915 macroF1 0.3885 top5 0.6794 | 35.6s (1915 img/s)  *best*
+2026-11-11 09:21:21 | INFO | epoch   8 | lr 8.99e-04/8.99e-04 | train loss 2.3597 acc 0.4193 | val loss 2.3184 acc 0.4355 macroF1 0.4357 top5 0.7174 | 35.4s (1924 img/s)  *best*
+2026-11-11 09:21:59 | INFO | epoch   9 | lr 8.64e-04/8.64e-04 | train loss 2.2631 acc 0.4382 | val loss 2.2288 acc 0.4482 macroF1 0.4434 top5 0.7347 | 35.4s (1924 img/s)  *best*
+2026-11-11 09:22:38 | INFO | epoch  10 | lr 8.25e-04/8.25e-04 | train loss 2.1904 acc 0.4550 | val loss 2.0916 acc 0.4843 macroF1 0.4768 top5 0.7556 | 35.4s (1925 img/s)  *best*
+2026-11-11 09:23:16 | INFO | epoch  11 | lr 7.83e-04/7.83e-04 | train loss 2.1165 acc 0.4745 | val loss 1.8979 acc 0.5282 macroF1 0.5284 top5 0.7967 | 35.4s (1923 img/s)  *best*
+2026-11-11 09:23:54 | INFO | epoch  12 | lr 7.37e-04/7.37e-04 | train loss 2.0492 acc 0.4867 | val loss 1.9958 acc 0.5030 macroF1 0.5112 top5 0.7752 | 35.6s (1914 img/s)
+2026-11-11 09:24:32 | INFO | epoch  13 | lr 6.88e-04/6.88e-04 | train loss 1.9935 acc 0.5010 | val loss 1.9318 acc 0.5222 macroF1 0.5278 top5 0.7913 | 35.4s (1924 img/s)
+2026-11-11 09:25:10 | INFO | epoch  14 | lr 6.37e-04/6.37e-04 | train loss 1.9336 acc 0.5147 | val loss 1.8298 acc 0.5405 macroF1 0.5363 top5 0.8017 | 35.5s (1920 img/s)  *best*
+2026-11-11 09:25:48 | INFO | epoch  15 | lr 5.85e-04/5.85e-04 | train loss 1.8835 acc 0.5266 | val loss 1.8079 acc 0.5494 macroF1 0.5535 top5 0.8103 | 35.6s (1917 img/s)  *best*
+2026-11-11 09:26:26 | INFO | epoch  16 | lr 5.32e-04/5.32e-04 | train loss 1.8275 acc 0.5393 | val loss 1.7184 acc 0.5646 macroF1 0.5665 top5 0.8234 | 35.3s (1930 img/s)  *best*
+2026-11-11 09:27:05 | INFO | epoch  17 | lr 4.78e-04/4.78e-04 | train loss 1.7788 acc 0.5481 | val loss 1.6453 acc 0.5940 macroF1 0.5939 top5 0.8347 | 35.5s (1919 img/s)  *best*
+2026-11-11 09:27:43 | INFO | epoch  18 | lr 4.25e-04/4.25e-04 | train loss 1.7363 acc 0.5602 | val loss 1.6398 acc 0.5920 macroF1 0.5882 top5 0.8357 | 35.4s (1927 img/s)
+2026-11-11 09:28:21 | INFO | epoch  19 | lr 3.73e-04/3.73e-04 | train loss 1.6990 acc 0.5687 | val loss 1.5371 acc 0.6151 macroF1 0.6136 top5 0.8492 | 35.5s (1922 img/s)  *best*
+2026-11-11 09:28:59 | INFO | epoch  20 | lr 3.22e-04/3.22e-04 | train loss 1.6551 acc 0.5799 | val loss 1.4560 acc 0.6348 macroF1 0.6310 top5 0.8639 | 35.5s (1921 img/s)  *best*
+2026-11-11 09:29:37 | INFO | epoch  21 | lr 2.73e-04/2.73e-04 | train loss 1.6227 acc 0.5868 | val loss 1.4888 acc 0.6237 macroF1 0.6243 top5 0.8573 | 35.5s (1922 img/s)
+2026-11-11 09:30:15 | INFO | epoch  22 | lr 2.27e-04/2.27e-04 | train loss 1.5869 acc 0.5942 | val loss 1.4290 acc 0.6412 macroF1 0.6419 top5 0.8685 | 35.5s (1917 img/s)  *best*
+2026-11-11 09:30:53 | INFO | epoch  23 | lr 1.85e-04/1.85e-04 | train loss 1.5601 acc 0.6017 | val loss 1.4042 acc 0.6482 macroF1 0.6473 top5 0.8733 | 35.5s (1918 img/s)  *best*
+2026-11-11 09:31:32 | INFO | epoch  24 | lr 1.46e-04/1.46e-04 | train loss 1.5279 acc 0.6082 | val loss 1.3813 acc 0.6522 macroF1 0.6528 top5 0.8745 | 35.6s (1915 img/s)  *best*
+2026-11-11 09:32:10 | INFO | epoch  25 | lr 1.11e-04/1.11e-04 | train loss 1.5025 acc 0.6170 | val loss 1.3748 acc 0.6578 macroF1 0.6589 top5 0.8763 | 35.6s (1914 img/s)  *best*
+2026-11-11 09:32:48 | INFO | epoch  26 | lr 8.09e-05/8.09e-05 | train loss 1.4892 acc 0.6179 | val loss 1.3523 acc 0.6594 macroF1 0.6600 top5 0.8775 | 35.6s (1915 img/s)  *best*
+2026-11-11 09:33:26 | INFO | epoch  27 | lr 5.58e-05/5.58e-05 | train loss 1.4697 acc 0.6228 | val loss 1.3474 acc 0.6619 macroF1 0.6622 top5 0.8804 | 35.5s (1920 img/s)  *best*
+2026-11-11 09:34:04 | INFO | epoch  28 | lr 3.59e-05/3.59e-05 | train loss 1.4646 acc 0.6222 | val loss 1.3469 acc 0.6597 macroF1 0.6602 top5 0.8795 | 35.4s (1923 img/s)
+2026-11-11 09:34:42 | INFO | epoch  29 | lr 2.16e-05/2.16e-05 | train loss 1.4485 acc 0.6292 | val loss 1.3493 acc 0.6604 macroF1 0.6604 top5 0.8794 | 35.5s (1919 img/s)
+2026-11-11 09:35:21 | INFO | epoch  30 | lr 1.29e-05/1.29e-05 | train loss 1.4485 acc 0.6269 | val loss 1.3292 acc 0.6618 macroF1 0.6620 top5 0.8827 | 35.6s (1912 img/s)
+2026-11-11 09:35:21 | INFO | Best epoch 27 | val macroF1 0.6622 | val acc 0.6619 | train time 17.8 min
+2026-11-11 09:35:36 | INFO | [test] acc 0.7103 (95% CI 0.7049-0.7155) | macroF1 0.7096 (95% CI 0.7040-0.7143) | top5 0.9133 | ECE 0.0787 | throughput 11489 img/s | latency bs1 0.31 ms
+2026-11-11 09:35:36 | INFO | Done: /kaggle/working/CO3113-A2/outputs/runs/food101/b0_simple_cnn/seed123

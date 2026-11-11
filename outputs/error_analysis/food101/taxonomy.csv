@@ -1,0 +1,5 @@
+experiment,n_test,n_errors,consensus,sibling,near_miss,gross,confident,confident_consensus_or_sibling,near_duplicate_errors
+b0_simple_cnn,25250,7229,350,2461,2790,1628,165,95,8
+p1_resnet50,25250,3535,674,1154,1265,442,731,516,3
+p2_efficientnet_b0,25250,3817,674,1202,1434,507,411,294,4
+p3_convnext_tiny,25250,2901,674,957,963,307,601,453,2

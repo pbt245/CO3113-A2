@@ -19,6 +19,10 @@ Manual review (review-make / review-score), P1 errors only:
   verdict           label_wrong  the photo shows the predicted dish (or another dish), not the label
                     ambiguous    several dishes / dish not identifiable / both labels plausible
                     model_error  the photo clearly shows the labelled dish
+  The reviewed sample (data/error_review/p1_error_review.csv) was drawn from the errors of the M2 P1 seed-42
+  checkpoint (run food101-p1_resnet50-s42-20261029-195643, run folder in git at commit e39b497); its buckets are
+  those of that checkpoint. review-score adds how many reviewed images the final (M3) seed-42 models still get
+  wrong - label_wrong / ambiguous are properties of the image, so they should persist across models.
 Outputs: outputs/error_analysis/food101/
 """
 import argparse
@@ -294,11 +298,16 @@ def review_score(args):
     if len(bad):
         print(f"{len(bad)} rows without a valid verdict ({VERDICTS}):\n{bad.head(10).to_string(index=False)}")
         sys.exit(1)
-    errors_csv = resolve_path(args.out) / f"errors_{REVIEW_MODEL}_seed{args.seed}.csv"
-    if errors_csv.exists():   # buckets from the latest taxonomy run (consensus needs every pretrained model)
-        latest = pd.read_csv(errors_csv, keep_default_na=False).set_index("entry")["bucket"]
-        df["bucket"] = df.entry.map(latest).fillna(df.bucket)
-    result, lines = {"model": REVIEW_MODEL, "raters": sorted(set(df.rater) - {""}), "strata": {}}, []
+    runs_root = resolve_path(args.runs_root) / "food101"
+    preds = {e: p.set_index("entry") for e, p in load_predictions(runs_root, PRETRAINED, args.seed).items()}
+    for e, p in preds.items():
+        df[f"wrong_{MAIN[e]}"] = ~df.entry.map(p.correct).astype(bool)
+        df[f"same_{MAIN[e]}"] = df.entry.map(p.pred_name) == df.pred_name
+    tags = [MAIN[e] for e in preds]
+    if tags:
+        df["wrong_all"] = df[[f"wrong_{t}" for t in tags]].all(axis=1)
+        df["same_all"] = df[[f"same_{t}" for t in tags]].all(axis=1)
+    result, lines = {"model": REVIEW_MODEL, "n_raters": len(set(df.rater) - {""}), "strata": {}}, []
     rows = []
     for stratum, g in df.groupby("stratum", sort=False):
         n = len(g)
@@ -313,14 +322,28 @@ def review_score(args):
         rows.append(cells)
     xt = pd.crosstab(df.bucket, df.verdict).reindex(index=BUCKETS, columns=VERDICTS, fill_value=0)
     result["bucket_x_verdict"] = xt.to_dict("index")
+    pers = []
+    for v in VERDICTS:
+        g = df[df.verdict == v]
+        cells = [v, len(g)] + [f"{int(g[f'wrong_{t}'].sum())} ({100 * g[f'wrong_{t}'].mean():.0f} %)" for t in tags]
+        if tags:
+            cells += [f"{int(g.wrong_all.sum())} ({100 * g.wrong_all.mean():.0f} %)",
+                      f"{int(g.same_all.sum())} ({100 * g.same_all.mean():.0f} %)"]
+        pers.append(cells)
+        result.setdefault("persistence", {})[v] = {c: int(g[c].sum()) for c in g.columns if c.startswith(("wrong_", "same_"))}
     out = resolve_path(args.out)
     save_json(result, out / "review_result.json")
     lines = ["# Manual review of P1 test errors", "",
-             f"Model {REVIEW_MODEL}, seed {args.seed}. Raters: {', '.join(result['raters']) or 'n/a'}. "
-             "Wilson 95 % intervals.", "",
+             f"Errors of the M2 {REVIEW_MODEL} seed-42 checkpoint (run food101-p1_resnet50-s42-20261029-195643, commit "
+             f"e39b497). One rater per image; Wilson 95 % intervals.", "",
              md_table(["Stratum", "n"] + VERDICTS, rows), "",
              "## Automatic bucket x manual verdict (both strata)", "",
              md_table(["Bucket"] + VERDICTS, [[b] + [int(xt.loc[b, v]) for v in VERDICTS] for b in BUCKETS]), "",
+             "## Persistence in the final (M3) models, seed " + str(args.seed), "",
+             "How many reviewed images each final model still gets wrong; 'all' = every pretrained model wrong, "
+             "'all, same class' = every pretrained model predicts the class the M2 model predicted.", "",
+             md_table(["Verdict", "n"] + [f"{t} wrong" for t in tags] + (["all wrong", "all, same class"] if tags else []),
+                      pers), "",
              "## Label-wrong and ambiguous examples", ""]
     lines += [f"- `{r.entry}` ({r.stratum}, label {r.true_name}, pred {r.pred_name} {r.confidence:.2f}): "
               f"**{r.verdict}** - {r.note}" for r in df[df.verdict != "model_error"].itertuples()]
